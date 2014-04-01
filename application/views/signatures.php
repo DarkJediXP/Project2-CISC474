@@ -45,20 +45,37 @@ function onDataBound(e)
     
     have to make a form to send the info 
     to that new func
+    
+    
+    WARNING CLICKING ON SAME USER GIVES
+    ERROR!!!
     */
     function consoleLogSelection(e)
     {
      var isSet = false;
      var grid = $("#document_grid").data("kendoGrid");
+     
      $(grid.tbody).on("click", "td", function (e) 
      {
+     	/*
+     	Keeps the rest of the handlers from being executed and prevents the event from bubbling up the DOM tree.
+     	*/
+     	e.stopImmediatePropagation(); 
+   
+     	grid = $("#document_grid").data("kendoGrid");
             // gets the signature cooridnates and outputs to console 
         var this_row = $(this).closest("tr"); // grabs the nearest row here user clicked
         var this_rowIdx = $("tr", grid.tbody).index(this_row);
+     //   console.log($(this).closest("tr"));
+    //    console.log($("tr", grid.tbody));
         var colIdx = $("td", row).index(this);
            //alert(this_rowIdx + '-' + colIdx); // will show an alert in browser if needed 
         var row = grid.tbody.find(":nth-child("+ this_rowIdx +")").find(":nth-child(4)").html(); //giving me html row
-
+        //console.log("this row " + this_rowIdx);
+		//console.log($("#document_grid").data("kendoGrid"));
+		console.log($("#document_grid").data("kendoGrid")._data[this_rowIdx]);
+        //giving errors
+        //console.log("giving erros: "+ ("#document_grid").data("kendoGrid")._data[this_rowIdx].signature;
         var sig = JSON.parse($("#document_grid").data("kendoGrid")._data[this_rowIdx].signature); //gives sig as JSON Object
         var pad = document.getElementById("Pad")
         var documentContent = $("#document_grid").data("kendoGrid")._data[this_rowIdx].content;
@@ -87,33 +104,38 @@ function onDataBound(e)
          
          
          document.getElementById('contentArea').appendChild(sdiv); 
-         console.log(documentContent);  
+        // console.log(documentContent);  
          document.getElementById('contentTextArea').value = documentContent;
-         console.log(document.getElementById('contentTextArea').value);
+        // console.log(document.getElementById('contentTextArea').value);
          /*
          I have to set the value of the input fields after declaring
          them so that I can post these values to my function action_saveEdit
          */
          document.getElementById('edit_doc_id').value = this_doc_id;
-         console.log(this_doc_id);
+       //  console.log(this_doc_id);
          /*
           Adds an onclick event to the editbutton under the document
           preview the other way was pretty hard. I was trying to 
           add it into a string literal and couldnt get the escape
           chararacter "/" in the right place. 
          */
-         document.getElementById("editButton").onclick = function(){
+         
+document.getElementById("editButton").onclick = function(){
                   //alert("We just edited this Shit!!!");
                   //window.location= "\<?php echo $exepath; ?>documents/add"; sends me to the edit doc page
                   $("#contentTextArea").kendoEditor();
 				  $("#editButton").hide();
 				  $("#saveButton").show();
          }
+
          isSet = true;        
        }
        else
        {
                 document.getElementById('contentTextArea').value = documentContent;
+                document.getElementById('edit_doc_id').value = this_doc_id;
+              //  console.log("this doc. content: "+ documentContent);  
+              //  console.log("this doc. id: "+ this_doc_id);
         }
 
 
