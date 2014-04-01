@@ -11,7 +11,9 @@
           $this->active_tab = 'signatures';
           $this->view->signatures_view = Misc::find_file('views', 'add_document');
       }
-
+	  // create a new action for editing doc
+	  
+	  
       public function action_save(){
         $doc = ORM::factory('document');
         $doc->user_id = $this->myUser->user_id;
@@ -25,6 +27,18 @@
 
         $this->success_message = "Document Saved!";
         $this->action_index();
+      }
+      
+      
+      public function action_saveEdit(){
+      	  $id = $this->request->post('doc_id');;
+      	  echo $id;
+      	  $res = DB::query('select')->table('documents')->where('document_id', '=', $id);
+	      $doc->save();
+	      $this->success_message = "Your changes have been saved!";
+	      $doc->content = $this->request->post('content');
+	      $this->action_index();
+	      
       }
       // instead of $users we use $doc
        public function action_documents_service(){

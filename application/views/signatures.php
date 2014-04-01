@@ -35,6 +35,17 @@ function onDataBound(e)
     HTML content. 
     THIS GETS A ROW: console.log(grid.tbody.find(">tr:first").html());
     */
+    
+    
+    
+    /*
+    IMPORTANT:
+    have to create a new func in documents
+    controller for editing docs
+    
+    have to make a form to send the info 
+    to that new func
+    */
     function consoleLogSelection(e)
     {
      var isSet = false;
@@ -51,8 +62,9 @@ function onDataBound(e)
         var sig = JSON.parse($("#document_grid").data("kendoGrid")._data[this_rowIdx].signature); //gives sig as JSON Object
         var pad = document.getElementById("Pad")
         var documentContent = $("#document_grid").data("kendoGrid")._data[this_rowIdx].content;
-        console.log(documentContent);
-        $("#document_grid").data("kendoGrid")._data[this_rowIdx].signature = document.getElementById("wrapsig"); //Gives an HTML form element  
+        var this_doc_id = $("#document_grid").data("kendoGrid")._data[this_rowIdx].document_id;
+        //Gives an HTML form element  
+        $("#document_grid").data("kendoGrid")._data[this_rowIdx].signature = document.getElementById("wrapsig"); 
         $("#document_grid").data("kendoGrid").refresh(); // refreshes the view after switching to hello
         
         /*
@@ -71,9 +83,17 @@ function onDataBound(e)
 
          sdiv.className = 'k-content k-state-active';
 
-         sdiv.innerHTML = '<h2>Document Preview</h2><br><form id="documentForm2" action="<?php echo $exepath; ?>documents/save" method="POST" onsubmit="return submitForm();"><textarea class="k-textbox" id = "contentTextArea" style = "resize: none"; readonly rows="10" cols="100">  </textarea><br><button type="button" class="k-button" id="editButton">Edit Document</button></form>';
+         sdiv.innerHTML = '<h2>Document Preview</h2><br><form id="documentForm2" action="<?php echo $exepath; ?>documents/saveEdit" method="POST" onsubmit="return submitForm();"><input type="text" name="doc_id" id="edit_doc_id"><br><textarea class="k-textbox" id = "contentTextArea" style = "resize: none"; readonly rows="10" cols="100">  </textarea><br><button type="button" class="k-button" id="editButton">Edit Document</button><button type="submit" class="k-button" id="saveButton" style= "display: none;">Save Document</button></form>';
+         
+         
          document.getElementById('contentArea').appendChild(sdiv);   
          document.getElementById('contentTextArea').value = documentContent;
+         /*
+         I have to set the value of the input fields after declaring
+         them so that I can post these values to my function action_saveEdit
+         */
+         document.getElementById('edit_doc_id').value = this_doc_id;
+         console.log(this_doc_id);
          /*
           Adds an onclick event to the editbutton under the document
           preview the other way was pretty hard. I was trying to 
@@ -84,6 +104,8 @@ function onDataBound(e)
                   //alert("We just edited this Shit!!!");
                   //window.location= "\<?php echo $exepath; ?>documents/add"; sends me to the edit doc page
                   $("#contentTextArea").kendoEditor();
+				  $("#editButton").hide();
+				  $("#saveButton").show();
          }
          isSet = true;        
        }
