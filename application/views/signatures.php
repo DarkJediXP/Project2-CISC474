@@ -83,11 +83,13 @@ function onDataBound(e)
 
          sdiv.className = 'k-content k-state-active';
 
-         sdiv.innerHTML = '<h2>Document Preview</h2><br><form id="documentForm2" action="<?php echo $exepath; ?>documents/saveEdit" method="POST" onsubmit="return submitForm();"><input type="text" name="doc_id" id="edit_doc_id"><br><textarea class="k-textbox" id = "contentTextArea" style = "resize: none"; readonly rows="10" cols="100">  </textarea><br><button type="button" class="k-button" id="editButton">Edit Document</button><button type="submit" class="k-button" id="saveButton" style= "display: none;">Save Document</button></form>';
+         sdiv.innerHTML = '<h2>Document Preview</h2><br><form id="documentForm2" action="<?php echo $exepath; ?>documents/saveEdit" method="POST" onsubmit="return submitForm();">Document ID:<input class = "k-textbox" type="text" name="doc_id" id="edit_doc_id" style="width: 50px;" readonly><br><textarea class="k-textbox" name="editedContent" id="contentTextArea" style = "resize: none"; readonly rows="10" cols="100">  </textarea><br><button type="button" class="k-button" id="editButton">Edit Document</button><button type="submit" class="k-button" id="saveButton" style= "display: none;">Save Document</button></form>';
          
          
-         document.getElementById('contentArea').appendChild(sdiv);   
+         document.getElementById('contentArea').appendChild(sdiv); 
+         console.log(documentContent);  
          document.getElementById('contentTextArea').value = documentContent;
+         console.log(document.getElementById('contentTextArea').value);
          /*
          I have to set the value of the input fields after declaring
          them so that I can post these values to my function action_saveEdit

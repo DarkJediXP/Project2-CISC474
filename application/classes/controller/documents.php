@@ -11,8 +11,6 @@
           $this->active_tab = 'signatures';
           $this->view->signatures_view = Misc::find_file('views', 'add_document');
       }
-	  // create a new action for editing doc
-	  
 	  
       public function action_save(){
         $doc = ORM::factory('document');
@@ -31,19 +29,19 @@
       
       
       public function action_saveEdit(){
-      	  $id = $this->request->post('doc_id');;
-      	  echo $id;
-      	  $res = DB::query('select')->table('documents')->where('document_id', '=', $id);
+      	  $id = $this->request->post('doc_id');
+      	  $doc = ORM::factory('document',$id);
+	  	 // echo $doc->title;
+	  	  $doc->content = $this->request->post('editedContent');
 	      $doc->save();
-	      $this->success_message = "Your changes have been saved!";
-	      $doc->content = $this->request->post('content');
+	      $this->success_message = "Your changes have been saved!";   
 	      $this->action_index();
 	      
       }
       // instead of $users we use $doc
        public function action_documents_service(){
             header('Content-Type: application/json');
-           // console.log("hey");
+           
             $sort_field = 'date_added';
             $sort_dir = 'desc';
             if(isset($_GET['sort'])){
@@ -51,10 +49,9 @@
                 if($sort_field == 'name') $sort_field = 'users.name';
                 $sort_dir = $_GET['sort'][0]['dir'];
             }
-			// Have a question here about Objects !!!!! This is the SQL request done by the ORM
             $res = DB::query('select')->table('documents')
                 ->fields('document_id', 'user_id', 'title', 'content', 'signature', 'date_added')
-             //   ->join('users',array('users.user_id','auditlogs.user_id'),'left')
+            
                 ->offset($_GET['skip'])
                 ->limit($_GET['take'])
                 ->order_by($sort_field, $sort_dir)
@@ -62,11 +59,8 @@
 		
 			
             $count = DB::query('count')->table('documents')->execute();
-
             echo json_encode(array('PageSize' => $count, 'Result' => $res->as_array()));
-            
-           // console.log($res);
-           // console.log($res->as_array());
+            //echo $count;
             exit;
         }
 
