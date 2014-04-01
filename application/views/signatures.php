@@ -76,7 +76,12 @@ function onDataBound(e)
 		console.log($("#document_grid").data("kendoGrid")._data[this_rowIdx]);
         //giving errors
         //console.log("giving erros: "+ ("#document_grid").data("kendoGrid")._data[this_rowIdx].signature;
-        var sig = JSON.parse($("#document_grid").data("kendoGrid")._data[this_rowIdx].signature); //gives sig as JSON Object
+        try {
+  var sig = JSON.parse($("#document_grid").data("kendoGrid")._data[this_rowIdx].signature); //gives sig as JSON Object
+} catch(err) {
+  console.log("error in JSON.parse()");
+}
+        
         var pad = document.getElementById("Pad")
         var documentContent = $("#document_grid").data("kendoGrid")._data[this_rowIdx].content;
         var this_doc_id = $("#document_grid").data("kendoGrid")._data[this_rowIdx].document_id;
@@ -94,7 +99,7 @@ function onDataBound(e)
          var div = document.createElement('div');
 
          div.className = 'row';
-         div.innerHTML = ' <td>This user has signed this document:<br><br></td><td valign="top"><form method="post" action="" class="sigPad" id="sigPadInput"><ul class="sigNav"><li class="clearButton"><a href="#clear" style="color: #000;">Clear</a></li></ul><div id = "wrapsig" class="sig sigWrapper"> <div class="typed"></div><canvas class="pad" width="98" height="55"></canvas><input type="hidden" name="output" class="output"></div> </form></td></tr>'; 
+         div.innerHTML = ' <td>This user has signed this document:<br><br></td><td valign="top"><form method="post" action="" class="sigPad" id="sigPadInput"><div id = "wrapsig" class="sig sigWrapper"> <div class="typed"></div><canvas class="pad" width="98" height="55"></canvas><input type="hidden" name="output" class="output"></div> </form></td></tr>'; 
          document.getElementById('Pad').appendChild(div); 
          var sdiv = document.createElement('sdiv');
 
