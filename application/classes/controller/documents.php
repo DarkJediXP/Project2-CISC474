@@ -50,7 +50,7 @@
                 $sort_dir = $_GET['sort'][0]['dir'];
             }
             $res = DB::query('select')->table('documents')
-                ->fields('document_id', 'user_id', 'title', 'content', 'signature', 'date_added')
+                ->fields('document_id', 'user_id', 'title', 'content', 'signature', 'date_added', 'approved')
             
                 ->offset($_GET['skip'])
                 ->limit($_GET['take'])

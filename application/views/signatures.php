@@ -179,6 +179,7 @@ $(document).ready(function()
               },
             // data binds to these columns have to open up the object 
             columns: [
+            { field: "approved", title: "Approved", width: 60},
             { field: "title", title: "Title", width: 90},
             { field: "document_id", title: "Doc ID", width: 60 },
             { field: "user_id", title: "User", width: 90 },
