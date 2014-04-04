@@ -69,9 +69,20 @@
 							</div>
 						</article>
 					</div>
+					
+					<div id="tab-4" class="tab">
+						<article>
+							<div class="text-section">
+								<?php if($active_tab == "docapprov" && $has_message) { 
+									include($message_handler);
+								} ?>
+								<?php include($docapprov); ?>
+							</div>
+						</article>
+					</div>
 
 					<?php if($admin_view != "") { ?>
-					<div id="tab-4" class="tab">
+					<div id="tab-5" class="tab">
 						<article>
 							<div class="text-section">
 								<?php if($active_tab == "admin" && $has_message) { 
@@ -82,7 +93,8 @@
 						</article>
 					</div>
 					<?php } ?>
-
+				
+					
 				</div>
 			</div>
 		</div>
@@ -102,8 +114,12 @@
 					<span class="tooltip"><span>Account Settings</span></span>
 				</li>
 				<?php if($admin_view != "") { ?>
+				<li <?php if($active_tab == "docapprov") { echo "class=\"active\""; } ?>>
+					<a href="#tab-4" class="ico7"><span>Documents Panel</span><em></em></a>
+					<span class="tooltip"><span>Documents Panel</span></span>
+				</li>
 				<li <?php if($active_tab == "admin") { echo "class=\"active\""; } ?>>
-					<a href="#tab-4" class="ico3"><span>Admin Panel</span><em></em></a>
+					<a href="#tab-5" class="ico3"><span>Admin Panel</span><em></em></a>
 					<span class="tooltip"><span>Admin Panel</span></span>
 				</li>
 				<?php } ?>

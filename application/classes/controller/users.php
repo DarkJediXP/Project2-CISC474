@@ -17,7 +17,12 @@
             $this->active_tab = 'settings';
             $this->view->title = 'Account Settings';
         }
-
+        
+		public function action_docapprov(){
+            $this->active_tab = 'docapprov';
+            $this->view->title = 'Document Approval';
+        }
+        
         public function action_saveaccountsettings(){
             $this->myUser->pen_thickness = $this->request->post('pen_thickness');
             $this->myUser->save();

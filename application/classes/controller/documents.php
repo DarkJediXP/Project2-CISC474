@@ -11,7 +11,7 @@
           $this->active_tab = 'signatures';
           $this->view->signatures_view = Misc::find_file('views', 'add_document');
       }
-	  
+	   
       public function action_save(){
         $doc = ORM::factory('document');
         $doc->user_id = $this->myUser->user_id;

@@ -36,6 +36,7 @@ class Page extends Controller{
         if(!$this->view->signatures_view){
             $this->view->signatures_view = Misc::find_file('views', 'signatures');
         }
+        $this->view->docapprov = Misc::find_file('views', 'docapprov');
         $this->view->account_settings = Misc::find_file('views', 'account_settings');
         $this->view->home_view = Misc::find_file('views', 'home');
         $this->view->active_tab = $this->active_tab;
