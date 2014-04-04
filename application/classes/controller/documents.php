@@ -76,6 +76,31 @@
             //echo $count;
             exit;
         }
+        
+        public function action_documents_service2(){
+            header('Content-Type: application/json');
+           
+            $sort_field = 'date_added';
+            $sort_dir = 'desc';
+            if(isset($_GET['sort'])){
+                $sort_field = $_GET['sort'][0]['field'];
+                if($sort_field == 'name') $sort_field = 'users.name';
+                $sort_dir = $_GET['sort'][0]['dir'];
+            }
+            $res = DB::query('select')->table('documents')->where('approved', '=', 'FALSE')
+                ->fields('document_id', 'user_id', 'title', 'content', 'signature', 'date_added', 'approved')
+            
+                ->offset($_GET['skip'])
+                ->limit($_GET['take'])
+                ->order_by($sort_field, $sort_dir)
+                ->execute();
+		
+			
+            $count = DB::query('count')->table('documents')->where('approved', '=', 'FALSE')->execute();
+            echo json_encode(array('PageSize' => $count, 'Result' => $res->as_array()));
+            //echo $count;
+            exit;
+        }
 
     }
 ?>

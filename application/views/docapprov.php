@@ -10,7 +10,7 @@ the document value of Approved to True in the data base.
 
 <h1>Approve Documents</h1>
 <!-- This table makes a box so that i can show a signature without it you cant -->
-<p>List of all documents</p>  
+<p>List of all documents that need approval:</p>  
 
 <div id="example2" class="k-content">
   <div id="document_grid2"  style="font-size:11px;"> </div>
@@ -141,7 +141,7 @@ $(document).ready(function()
       pageSize: 30,
                 //this reads in data from docments service, this is java script code
                 transport: {
-                  read: "<?php echo $exepath; ?>documents/documents_service"
+                  read: "<?php echo $exepath; ?>documents/documents_service2"
                 },
 
                 schema: {
