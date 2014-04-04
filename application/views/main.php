@@ -70,6 +70,9 @@
 						</article>
 					</div>
 					
+					
+
+					<?php if($admin_view != "") { ?>
 					<div id="tab-4" class="tab">
 						<article>
 							<div class="text-section">
@@ -80,8 +83,6 @@
 							</div>
 						</article>
 					</div>
-
-					<?php if($admin_view != "") { ?>
 					<div id="tab-5" class="tab">
 						<article>
 							<div class="text-section">
