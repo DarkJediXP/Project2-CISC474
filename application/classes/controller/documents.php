@@ -38,6 +38,19 @@
 	      $this->action_index();
 	      
       }
+      
+      /*
+      Allows Admin to approve a Document    
+      */
+       public function action_approve(){
+      	  $id = $this->request->post('doc_id2');
+      	  $doc = ORM::factory('document',$id);
+	  	  $doc->approved = "TRUE";
+	  	  $doc->save();
+	      $this->success_message = "You have approved this document!";   
+	      $this->action_index();
+	      
+      }
       // instead of $users we use $doc
        public function action_documents_service(){
             header('Content-Type: application/json');

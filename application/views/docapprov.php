@@ -98,7 +98,7 @@ the document value of Approved to True in the data base.
 		 */
 		 var sdiv2 = document.createElement('sdiv2');
          sdiv2.className = 'k-content k-state-active';
-         sdiv2.innerHTML = '<div id="dochead2">Document Preview</div><br><form id="documentForm3" action="<?php echo $exepath; ?>documents/saveEdit" method="POST" onsubmit="return submitForm();">Document ID:<input class = "k-textbox" type="text" name="doc_id2" id="edit_doc_id2" style="width: 50px;" readonly><br><textarea class="k-textbox" name="editedContent2" id="contentTextArea2" style = "resize: none"; readonly rows="10" cols="100">  </textarea><br><button type="button" class="k-button" id="editButton2">Edit Document</button><button type="submit" class="k-button" id="saveButton2" style= "display: none;">Save Document</button></form>';
+         sdiv2.innerHTML = '<div id="dochead2">Document Preview</div><br><form id="documentForm3" action="<?php echo $exepath; ?>documents/approve" method="POST" onsubmit="return submitForm();">Document ID:<input class = "k-textbox" type="text" name="doc_id2" id="edit_doc_id2" style="width: 50px;" readonly><br><textarea class="k-textbox" name="editedContent2" id="contentTextArea2" style = "resize: none"; readonly rows="10" cols="100">  </textarea><br><button type="submit" class="k-button" id="approvebutton">Approve Document</button></form>';
          
          
          document.getElementById('contentArea2').appendChild(sdiv2); 
@@ -108,21 +108,9 @@ the document value of Approved to True in the data base.
          them so that I can post these values to my function action_saveEdit
          */
          document.getElementById('edit_doc_id2').value = this_doc_id2;
-         /*
-          Adds an onclick event to the editbutton under the document
-          preview the other way was pretty hard. I was trying to 
-          add it into a string literal and couldnt get the escape
-          chararacter "/" in the right place. 
-         */
+     
          
-document.getElementById("editButton2").onclick = function(){
-                 $("#contentTextArea2").removeAttr('readonly');
-				// console.log($("#dochead")[0]);
-                 $("#dochead2")[0].innerText = "Edit Mode";
-                 //console.log($("#dochead").innerText);
-				  $("#editButton2").hide();
-				  $("#saveButton2").show();
-         }
+
 
          isSet2 = true;        
        }
