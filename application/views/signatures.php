@@ -35,24 +35,50 @@ function onDataBound(e)
     HTML content. 
     THIS GETS A ROW: console.log(grid.tbody.find(">tr:first").html());
     */
+    
+    
+    
+    /*
+    IMPORTANT:
+    have to create a new func in documents
+    controller for editing docs
+    
+    have to make a form to send the info 
+    to that new func
+    
+    
+    WARNING CLICKING ON SAME USER GIVES
+    ERROR!!!
+    */
     function consoleLogSelection(e)
     {
      var isSet = false;
      var grid = $("#document_grid").data("kendoGrid");
+     
      $(grid.tbody).on("click", "td", function (e) 
      {
+     	/*
+     	Keeps the rest of the handlers from being executed and prevents the event from bubbling up the DOM tree.
+     	*/
+     	e.stopImmediatePropagation(); 
+   
+     	grid = $("#document_grid").data("kendoGrid");
             // gets the signature cooridnates and outputs to console 
         var this_row = $(this).closest("tr"); // grabs the nearest row here user clicked
         var this_rowIdx = $("tr", grid.tbody).index(this_row);
         var colIdx = $("td", row).index(this);
-           //alert(this_rowIdx + '-' + colIdx); // will show an alert in browser if needed 
         var row = grid.tbody.find(":nth-child("+ this_rowIdx +")").find(":nth-child(4)").html(); //giving me html row
-
-        var sig = JSON.parse($("#document_grid").data("kendoGrid")._data[this_rowIdx].signature); //gives sig as JSON Object
+		console.log($("#document_grid").data("kendoGrid")._data[this_rowIdx]);
+        try {
+				var sig = JSON.parse($("#document_grid").data("kendoGrid")._data[this_rowIdx].signature); //gives sig as JSON Object
+				} catch(err) {
+						console.log("error in JSON.parse()");
+						}
         var pad = document.getElementById("Pad")
         var documentContent = $("#document_grid").data("kendoGrid")._data[this_rowIdx].content;
-        console.log(documentContent);
-        $("#document_grid").data("kendoGrid")._data[this_rowIdx].signature = document.getElementById("wrapsig"); //Gives an HTML form element  
+        var this_doc_id = $("#document_grid").data("kendoGrid")._data[this_rowIdx].document_id;
+        //Gives an HTML form element  
+        $("#document_grid").data("kendoGrid")._data[this_rowIdx].signature = document.getElementById("wrapsig"); 
         $("#document_grid").data("kendoGrid").refresh(); // refreshes the view after switching to hello
         
         /*
@@ -62,34 +88,52 @@ function onDataBound(e)
         */
         if(!isSet)
         {    
+        
+        //creates a html to show the signature
          var div = document.createElement('div');
-
-         div.className = 'row';
-         div.innerHTML = ' <td>This user has signed this document:<br><br></td><td valign="top"><form method="post" action="" class="sigPad" id="sigPadInput"><ul class="sigNav"><li class="clearButton"><a href="#clear" style="color: #000;">Clear</a></li></ul><div id = "wrapsig" class="sig sigWrapper"> <div class="typed"></div><canvas class="pad" width="98" height="55"></canvas><input type="hidden" name="output" class="output"></div> </form></td></tr>'; 
+         div.className = 'content';
+         div.innerHTML = ' <td>This user has signed this document:<br><br></td><td valign="top"><form method="post" action="" class="sigPad" id="sigPadInput"><div id = "wrapsig" class="sig sigWrapper"> <div class="typed"></div><canvas class="pad" width="98" height="55"></canvas><input type="hidden" name="output" class="output"></div> </form></td></tr>'; 
          document.getElementById('Pad').appendChild(div); 
-         var sdiv = document.createElement('sdiv');
-
+         
+		 /*
+		 This creates html to show the doucment preview for the user
+		 the use can click the edit button which creates a kendo editor 
+		 that the user can use to edit the document. 
+		 */
+		 var sdiv = document.createElement('sdiv');
          sdiv.className = 'k-content k-state-active';
-
-         sdiv.innerHTML = '<h2>Document Preview</h2><br><form id="documentForm2" action="<?php echo $exepath; ?>documents/save" method="POST" onsubmit="return submitForm();"><textarea class="k-textbox" id = "contentTextArea" style = "resize: none"; readonly rows="10" cols="100">  </textarea><br><button type="button" class="k-button" id="editButton">Edit Document</button></form>';
-         document.getElementById('contentArea').appendChild(sdiv);   
+         sdiv.innerHTML = '<div id="dochead">Document Preview</div><br><form id="documentForm2" action="<?php echo $exepath; ?>documents/saveEdit" method="POST" onsubmit="return submitForm();">Document ID:<input class = "k-textbox" type="text" name="doc_id" id="edit_doc_id" style="width: 50px;" readonly><br><textarea class="k-textbox" name="editedContent" id="contentTextArea" style = "resize: none"; readonly rows="10" cols="100">  </textarea><br><button type="button" class="k-button" id="editButton">Edit Document</button><button type="submit" class="k-button" id="saveButton" style= "display: none;">Save Document</button></form>';
+         
+         
+         document.getElementById('contentArea').appendChild(sdiv); 
          document.getElementById('contentTextArea').value = documentContent;
+         /*
+         I have to set the value of the input fields after declaring
+         them so that I can post these values to my function action_saveEdit
+         */
+         document.getElementById('edit_doc_id').value = this_doc_id;
          /*
           Adds an onclick event to the editbutton under the document
           preview the other way was pretty hard. I was trying to 
           add it into a string literal and couldnt get the escape
           chararacter "/" in the right place. 
          */
-         document.getElementById("editButton").onclick = function(){
-                  //alert("We just edited this Shit!!!");
-                  //window.location= "\<?php echo $exepath; ?>documents/add"; sends me to the edit doc page
-                  $("#contentTextArea").kendoEditor();
+         
+document.getElementById("editButton").onclick = function(){
+                 $("#contentTextArea").removeAttr('readonly');
+				// console.log($("#dochead")[0]);
+                 $("#dochead")[0].innerText = "Edit Mode";
+                 //console.log($("#dochead").innerText);
+				  $("#editButton").hide();
+				  $("#saveButton").show();
          }
+
          isSet = true;        
        }
        else
        {
                 document.getElementById('contentTextArea').value = documentContent;
+                document.getElementById('edit_doc_id').value = this_doc_id;
         }
 
 
@@ -135,6 +179,7 @@ $(document).ready(function()
               },
             // data binds to these columns have to open up the object 
             columns: [
+            { field: "approved", title: "Approved", width: 60},
             { field: "title", title: "Title", width: 90},
             { field: "document_id", title: "Doc ID", width: 60 },
             { field: "user_id", title: "User", width: 90 },
@@ -146,3 +191,5 @@ $(document).ready(function()
 });
 </script>
 </div>
+
+

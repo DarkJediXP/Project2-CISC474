@@ -17,7 +17,12 @@
             $this->active_tab = 'settings';
             $this->view->title = 'Account Settings';
         }
-
+        
+		public function action_docapprov(){
+            $this->active_tab = 'docapprov';
+            $this->view->title = 'Document Approval';
+        }
+        
         public function action_saveaccountsettings(){
             $this->myUser->pen_thickness = $this->request->post('pen_thickness');
             $this->myUser->save();
@@ -54,8 +59,8 @@
             }
             else{
                 // make sure a user with this username does not exist
-                $username = $this->request->post('username');
-                $user_test = ORM::factory('user')->where('name', $username)->find();
+                $username = $this->request->post('username'); //grabbing username from post
+                $user_test = ORM::factory('user')->where('name', $username)->find(); //checking if user already exist
                 if($user_test->loaded()){
                     $this->error_message = "A User with this name already exists, please try again!";
                     $this->action_addedit();
@@ -67,7 +72,7 @@
             }
 
             $user->email = $this->request->post('email');
-            $password = $this->request->post('password');
+            $password = md5($this->request->post('password'));
             if($password != ""){
                 $user->password = $password;
             }
@@ -98,7 +103,7 @@
                 return;
             }
             $username = $this->request->post('username');
-            $password = $this->request->post('password');
+            $password = md5($this->request->post('password'));
 
             if($username == ""){
                 return;
