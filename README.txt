@@ -8,15 +8,19 @@ OR, username: 'mega', password: 'test'
 
 INSTRUCTIONS:
 
-the user can see and edit documents by selecting the side panel 'manage signatures'
 
-users can click on a row which will bring up a preview of the document. The user
-can thenselect to edit the document by clicking the edit button under the preview.
+***IMPORTANT: USE MY cisc474_p2 mysqldump .sql file my project needs this!!!***
+
+
+The user can see and edit documents by selecting the side panel 'manage signatures'
+
+Users can click on a row which will bring up a preview of the document. The user
+can then select to edit the document by clicking the edit button under the preview.
 The user will then enter the edit mode where the user can edit the document then
 save the document.
 
 The user will see a success message after successively editing and saving the
-docuement.
+document.
 
 In the rows that are displayed a user can see what docs have been approved under
 the 'Approved' column in the Kendo Grid.
